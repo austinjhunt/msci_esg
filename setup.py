@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="py-msci-esg", # Replace with your own username
-    version="0.0.2",
+    version="0.0.3",
     author="Austin Hunt",
     author_email="huntaj@g.cofc.edu",
     description="A package for scraping content from the MSCI.com ESG Ratings Corporate Search Tool",

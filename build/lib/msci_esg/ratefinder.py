@@ -94,6 +94,13 @@ class ESGRateFinder:
             print(f'Rating paragraph: {rating_paragraph}')
         response['rating-paragraph'] = rating_paragraph
 
+        rating_history_paragraph = driver.find_element_by_class_name(
+            name="esg-rating-paragraph-hist"
+        ).text 
+        response['rating-history-paragraph'] = rating_history_paragraph
+        if self.debug: 
+            print(f'Rating history paragraph: {rating_history_paragraph}')
+
         rating_icon = driver.find_element_by_class_name(
             name="ratingdata-company-rating"
         )
@@ -128,7 +135,7 @@ class ESGRateFinder:
         date_labels = history_graph.find_element_by_class_name(
             name="highcharts-xaxis-labels"
         ).find_elements_by_xpath(".//*") # these are the historical rating
-        # dates formatted as Month-Day
+        # dates formatted as Month-Year
         if self.debug:
             print(f"Got date labels for rating history!")
  

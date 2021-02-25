@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: py-msci-esg
-Version: 0.0.2
+Version: 0.0.3
 Summary: A package for scraping content from the MSCI.com ESG Ratings Corporate Search Tool
 Home-page: https://github.com/austinjhunt/msci_esg
 Author: Austin Hunt
