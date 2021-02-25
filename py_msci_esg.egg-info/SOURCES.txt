@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+setup.py
+msci_esg/__init__.py
+msci_esg/ratefinder.py
+py_msci_esg.egg-info/PKG-INFO
+py_msci_esg.egg-info/SOURCES.txt
+py_msci_esg.egg-info/dependency_links.txt
+py_msci_esg.egg-info/requires.txt
+py_msci_esg.egg-info/top_level.txt

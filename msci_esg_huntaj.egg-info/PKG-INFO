@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: msci-esg-huntaj
+Version: 0.0.12
+Summary: A package for scraping content from the MSCI.com ESG Ratings Corporate Search Tool
+Home-page: https://github.com/austinjhunt/msci_esg
+Author: Austin Hunt
+Author-email: huntaj@g.cofc.edu
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/austinjhunt/msci_esg/issues
+Description: # MSCI ESG
+        ---
+        ## What is it?
+        This is a simple package that uses Selenium to scrape content from the MSCI.com [ESG (Environment, Sustainability, Governance) Corporate Search Tool](https://www.msci.com/our-solutions/esg-investing/esg-ratings/esg-ratings-corporate-search-tool/issuer/tesla-inc/IID000000002594878). 
+        
+        ---
+        ## Why was this created?
+        ESG ratings play an important role in stock market analysis, and previously, the only way of obtaining this data from MSCI was to open the Search Tool in a browser, search for a symbol, and click on one of the autosuggested results. This automates the collection of the important ESG rating data, both historical and current, and returns it in JSON format. 
+        This project was built as a supplemental tool for [StockScope](https://github.com/austinjhunt/stockscope), which is a Django web application in development for providing AI-driven Stock Market querying and alerting capabilities. 
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

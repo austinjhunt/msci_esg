@@ -1,0 +1,17 @@
+[INFO  - 2021-02-25T17:55:13.307Z] GhostDriver - Main - running on port 64872
+[INFO  - 2021-02-25T17:55:13.664Z] Session [9c535690-7792-11eb-bd8b-1942bf21a603] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2021-02-25T17:55:13.664Z] Session [9c535690-7792-11eb-bd8b-1942bf21a603] - page.customHeaders:  - {}
+[INFO  - 2021-02-25T17:55:13.664Z] Session [9c535690-7792-11eb-bd8b-1942bf21a603] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"mac-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2021-02-25T17:55:13.664Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 9c535690-7792-11eb-bd8b-1942bf21a603
+[ERROR - 2021-02-25T17:55:15.697Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1614275715621
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2021-02-25T17:55:17.091Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1614275717042
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2021-02-25T17:55:18.641Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1614275718621
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2021-02-25T17:55:19.877Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1614275719856
+
+  phantomjs://platform/console++.js:263 in error
