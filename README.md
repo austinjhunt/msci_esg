@@ -26,7 +26,7 @@ ratefinder = ESGRateFinder()
 # a JS timeout of 5 seconds (this is how long the Selenium web driver should wait for JS to execute 
 # before scraping content)
 response = ratefinder.get_esg_rating(
-    symbol="AAPL",
+    symbol="TSLA",
     js_timeout=5
 )
 # The response is a dictionary; print it

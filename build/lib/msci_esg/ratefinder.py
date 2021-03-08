@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.select import By
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException 
+from selenium.common.exceptions import TimeoutException, NoSuchElementException 
 import warnings 
 warnings.filterwarnings("ignore")
 
@@ -48,6 +48,23 @@ class ESGRateFinder:
                     'error': str(e)
                 }
         return response 
+        
+    def get_esg_category(self, rating=None): 
+        """ Get the category of an ESG risk rating """ 
+        response = None 
+        if rating: 
+            rating_map = {
+                'ccc': 'laggard',
+                'b': 'laggard',
+                'bb': 'average',
+                'bbb': 'average',
+                'a': 'average',
+                'aa': 'leader',
+                'aaa': 'leader'
+            }
+            response = rating_map[rating]
+        return response 
+
     def get_esg_rating(self, symbol=None, js_timeout=1):
         """ Function to get ESG rating information for a given stock
         Params: 
@@ -56,107 +73,120 @@ class ESGRateFinder:
         Returns :
         dict : dictionary of ESG rating information pulled from HTML parsing of MSCI corporate search page 
         """
-        # First get the stock MSCI properties 
-        props = self.get_stock_msci_properties(symbol=symbol) 
-        if self.debug:
-            print(f'Props are: {props}')
-
         # Initialize Response Dictionary 
         response = {}
-
-        # Build URL with properties and symbol 
-        url = self.MSCI_ESG_URL.format(props['encodedTitle'],props['url'])
-        if self.debug: 
-            print(f'URL built: {url}')
-        # Build Selenium web driver 
-        driver = webdriver.PhantomJS()
-        if self.debug:
-            print(f"Built PhantomJS driver {driver}")
-        driver.get(url)  
-        if self.debug:
-            print(f"Got URL") 
         try:
+            # First get the stock MSCI properties 
+            props = self.get_stock_msci_properties(symbol=symbol) 
             if self.debug:
-                print(f'Waiting for JS to build page to get content...')
-            data = [div for div in wait(driver, js_timeout).until(
-                    EC.presence_of_element_located((By.XPATH, '//div[@class="esg-rating-paragraph-distr"]'))
-                    )]
+                print(f'Props are: {props}') 
+            # Build URL with properties and symbol 
+            url = self.MSCI_ESG_URL.format(props['encodedTitle'],props['url'])
+            if self.debug: 
+                print(f'URL built: {url}')
+            # Build Selenium web driver 
+            driver = webdriver.PhantomJS()
             if self.debug:
-                print(f'Got content successfully!')
-        except TimeoutException: 
+                print(f"Built PhantomJS driver {driver}")
+            driver.get(url)  
             if self.debug:
-                print('Timeout reached for WebDriver Wait')
-                
-        rating_paragraph = driver.find_element_by_class_name(
-            name="esg-rating-paragraph-distr"
-        ).text
-        if self.debug:
-            print(f'Rating paragraph: {rating_paragraph}')
-        response['rating-paragraph'] = rating_paragraph
+                print(f"Got URL") 
+            try:
+                if self.debug:
+                    print(f'Waiting for JS to build page to get content...')
+                data = [div for div in wait(driver, js_timeout).until(
+                        EC.presence_of_element_located((By.XPATH, '//div[@class="esg-rating-paragraph-distr"]'))
+                        )]
+                if self.debug:
+                    print(f'Got content successfully!')
+            except TimeoutException: 
+                if self.debug:
+                    print('Timeout reached for WebDriver Wait')
+                    
+            rating_paragraph = driver.find_element_by_class_name(
+                name="esg-rating-paragraph-distr"
+            ).text
+            if self.debug:
+                print(f'Rating paragraph: {rating_paragraph}')
+            response['rating-paragraph'] = rating_paragraph
 
-        rating_history_paragraph = driver.find_element_by_class_name(
-            name="esg-rating-paragraph-hist"
-        ).text 
-        response['rating-history-paragraph'] = rating_history_paragraph
-        if self.debug: 
-            print(f'Rating history paragraph: {rating_history_paragraph}')
+            rating_history_paragraph = driver.find_element_by_class_name(
+                name="esg-rating-paragraph-hist"
+            ).text 
+            response['rating-history-paragraph'] = rating_history_paragraph
+            if self.debug: 
+                print(f'Rating history paragraph: {rating_history_paragraph}')
 
-        rating_icon = driver.find_element_by_class_name(
-            name="ratingdata-company-rating"
-        )
-        # get its other class name, that will tell the rating
-        other_class = rating_icon.get_attribute("class")
-        # class that tells rating formatted as esg-rating-circle-<RATING>
-        # Build a map of ratings to categories (laggard is bad, leader is good)
-        rating_map = {
-            'ccc': 'laggard',
-            'b': 'laggard',
-            'bb': 'average',
-            'bbb': 'average',
-            'a': 'average',
-            'aa': 'leader',
-            'aaa': 'leader'
-        }
-        rating = other_class.split("esg-rating-circle-")[-1].lower()
-        response['current'] = {}
-        response['current']['esg_rating'] = rating
-        response['current']['esg_category'] = rating_map[rating] 
-        if self.debug: 
-            print(f'ESG rating and category for {symbol}: {rating}/{rating_map[rating]}')
+            rating_icon = driver.find_element_by_class_name(
+                name="ratingdata-company-rating"
+            )
+            # get its other class name, that will tell the rating
+            other_class = rating_icon.get_attribute("class")
+            # class that tells rating formatted as esg-rating-circle-<RATING>
+            # Build a map of ratings to categories (laggard is bad, leader is good)
+            rating_map = {
+                'ccc': 'laggard',
+                'b': 'laggard',
+                'bb': 'average',
+                'bbb': 'average',
+                'a': 'average',
+                'aa': 'leader',
+                'aaa': 'leader'
+            }
+            rating = other_class.split("esg-rating-circle-")[-1].lower()
+            response['current'] = {}
+            response['current']['esg_rating'] = rating
+            response['current']['esg_category'] = rating_map[rating] 
+            if self.debug: 
+                print(f'ESG rating and category for {symbol}: {rating}/{rating_map[rating]}')
 
-        # build history 
-        history = {}
-        # Get the history graph
-        history_graph = driver.find_element_by_id(
-            id_="_esgratingsprofile_esg-rating-history"
-        )
-        if self.debug:
-            print(f"Got history graph HTML element")
-        date_labels = history_graph.find_element_by_class_name(
-            name="highcharts-xaxis-labels"
-        ).find_elements_by_xpath(".//*") # these are the historical rating
-        # dates formatted as Month-Year
-        if self.debug:
-            print(f"Got date labels for rating history!")
- 
-        # Get the rating history (the rating values for the respective dates)
-        rating_labels = history_graph.find_element_by_class_name(
-            name="highcharts-data-labels"
-        ).find_elements_by_class_name("highcharts-label")  
-        if self.debug:
-            print(f"Got rating labels for rating history")
+            # build history 
+            history = {}
+            # Get the history graph
+            history_graph = driver.find_element_by_id(
+                id_="_esgratingsprofile_esg-rating-history"
+            )
+            if self.debug:
+                print(f"Got history graph HTML element")
+            date_labels = history_graph.find_element_by_class_name(
+                name="highcharts-xaxis-labels"
+            ).find_elements_by_xpath(".//*") # these are the historical rating
+            # dates formatted as Month-Year
+            if self.debug:
+                print(f"Got date labels for rating history!")
+    
+            # Get the rating history (the rating values for the respective dates)
+            rating_labels = history_graph.find_element_by_class_name(
+                name="highcharts-data-labels"
+            ).find_elements_by_class_name("highcharts-label")  
+            if self.debug:
+                print(f"Got rating labels for rating history")
 
-        for i in range(len(rating_labels)):  
-            history[date_labels[i].text.lower()] = \
-                rating_labels[i].text.lower()
-        if self.debug:
-            print(f"History: {history}")
+            for i in range(len(rating_labels)):  
+                history[date_labels[i].text.lower()] = \
+                    rating_labels[i].text.lower()
+            if self.debug:
+                print(f"History: {history}")
 
-        response['history'] = history 
+            response['history'] = history 
 
-        if self.debug:
-            print(f"Full response: {response}")
-
+            if self.debug:
+                print(f"Full response: {response}")
+        except NoSuchElementException:
+            print(
+                f"MSCI ESG Ratings Corporate Search Tool may not have data for the stock {symbol}. "
+                f" To verify this, open https://www.msci.com/our-solutions/esg-investing/esg-ratings/"
+                f"esg-ratings-corporate-search-tool and search for your stock to see if the resulting "
+                f"page contains data."
+                )
+        except KeyError:
+            print(
+                f"MSCI ESG Ratings Corporate Search Tool may not have data for the stock {symbol}. "
+                f" To verify this, open https://www.msci.com/our-solutions/esg-investing/esg-ratings/"
+                f"esg-ratings-corporate-search-tool and search for your stock to see if the resulting "
+                f"page contains data."
+            )
+        
         return response
 
 if __name__ == "__main__": 

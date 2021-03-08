@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: py-msci-esg
-Version: 0.0.3
+Version: 0.0.7
 Summary: A package for scraping content from the MSCI.com ESG Ratings Corporate Search Tool
 Home-page: https://github.com/austinjhunt/msci_esg
 Author: Austin Hunt
@@ -35,7 +35,7 @@ Description: # MSCI ESG (Environment, Social, Governance) Corporate Search Tool 
         # a JS timeout of 5 seconds (this is how long the Selenium web driver should wait for JS to execute 
         # before scraping content)
         response = ratefinder.get_esg_rating(
-            symbol="AAPL",
+            symbol="TSLA",
             js_timeout=5
         )
         # The response is a dictionary; print it
