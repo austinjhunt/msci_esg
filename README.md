@@ -32,5 +32,9 @@ response = ratefinder.get_esg_rating(
 # The response is a dictionary; print it
 print(response)
 # Will look like: 
-# {'rating-paragraph': 'Apple is average among 52 companies in the technology hardware, storage & peripherals industry.', 'current': {'esg_rating': 'bbb', 'esg_category': 'average'}, 'history': {'oct-16': 'a', 'aug-17': 'a', 'sep-18': 'a', 'nov-19': 'a', 'dec-20': 'bbb'}}
+# {'rating-paragraph': 'Tesla is average among 40 companies in the automobiles industry.', 'rating-history-paragraph': "Tesla's rating remains unchanged since April, 2019.", 'current': {'esg_rating': 'a', 'esg_category': 'average'}, 'history': {'jul-17': 'aaa', 'apr-18': 'aa', 'aug-18': 'aa', 'apr-19': 'a', 'apr-20': 'a'}}
+```
+If you use a symbol that doesn't have any data on the ESG Ratings Corporate Search Tool (e.g. AAPL), the output will look like: 
+```
+MSCI ESG Ratings Corporate Search Tool may not have data for the stock AAPL.  To verify this, open https://www.msci.com/our-solutions/esg-investing/esg-ratings/esg-ratings-corporate-search-tool and search for your stock to see if the resulting page contains data.
 ```
