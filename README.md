@@ -16,6 +16,7 @@ This project was built as a supplemental tool for [StockScope](https://github.co
 --- 
 ## How to Use
 The following is a sample Python code snippet that uses this package.
+
 ```
 from msci_esg.ratefinder import ESGRateFinder
 
